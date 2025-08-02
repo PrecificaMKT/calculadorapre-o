@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1066,6 +1067,29 @@
                 <h2><i class="fas fa-calculator"></i> Calculadora de Preços</h2>
                 <p>Calcule o preço ideal para seus produtos em todos os marketplaces</p>
                 
+                <!-- Contador de Testes -->
+                <div id="contador-testes" style="
+                    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                    color: white;
+                    padding: 15px;
+                    border-radius: 10px;
+                    margin: 20px 0;
+                    text-align: center;
+                    font-weight: bold;
+                    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                    border: 2px solid #ff4757;
+                ">
+                    <div style="font-size: 18px; margin-bottom: 5px;">
+                        🔥 VERSÃO DEMO - TESTES LIMITADOS
+                    </div>
+                    <div style="font-size: 16px;">
+                        Você tem <span style="font-size: 20px; color: #ffd700;">3</span> teste(s) restante(s)
+                    </div>
+                    <div style="font-size: 14px; margin-top: 8px; opacity: 0.9;">
+                        Adquira a versão completa por apenas R$ 15,99
+                    </div>
+                </div>
+                
                 <div class="calculator-form">
                     <div class="form-grid">
                         <div class="form-group">
@@ -1220,7 +1244,7 @@
                     <p style="margin-top: 0.5rem; font-size: 0.9rem;">Valor: <strong>R$ 15,99</strong></p>
                 </div>
                 
-                <p>Após o pagamento, você receberá o link da calculadora no e-mail cadastrado em até 24 horas.</p>
+                <p>Após o pagamento, envie o comprovante para nosso WhatsApp <strong>(16) 99445-4641</strong> e receberá o link da calculadora em até 24 horas.</p>
                 
                 <button class="modal-submit" onclick="fecharModal()">
                     <i class="fas fa-check"></i>
@@ -1264,8 +1288,143 @@
             });
         });
 
+        // Sistema de Contador de 3 Testes - PrecificaMKT
+        const MAX_TESTES = 3;
+        const STORAGE_KEY = 'precificamkt_testes';
+        
+        function getTestesRealizados() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? parseInt(stored) : 0;
+        }
+        
+        function incrementarTestes() {
+            const atual = getTestesRealizados();
+            localStorage.setItem(STORAGE_KEY, (atual + 1).toString());
+            return atual + 1;
+        }
+        
+        function podeTestar() {
+            return getTestesRealizados() < MAX_TESTES;
+        }
+        
+        function criarModalLimite() {
+            const modalHTML = `
+                <div id="modal-limite" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    font-family: 'Inter', Arial, sans-serif;
+                ">
+                    <div style="
+                        background: white;
+                        padding: 40px;
+                        border-radius: 20px;
+                        max-width: 500px;
+                        width: 90%;
+                        text-align: center;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                        border: 3px solid #ff6b6b;
+                    ">
+                        <div style="font-size: 60px; margin-bottom: 20px;">🚫</div>
+                        <h2 style="color: #ff6b6b; margin-bottom: 15px; font-size: 24px;">
+                            Limite de Testes Atingido!
+                        </h2>
+                        <p style="color: #666; margin-bottom: 25px; font-size: 16px; line-height: 1.5;">
+                            Você já utilizou seus <strong>3 testes gratuitos</strong>.<br>
+                            Para continuar usando a calculadora sem limitações, adquira a versão completa!
+                        </p>
+                        
+                        <div style="
+                            background: linear-gradient(135deg, #22c55e, #16a34a);
+                            color: white;
+                            padding: 20px;
+                            border-radius: 15px;
+                            margin: 20px 0;
+                            border: 2px solid #15803d;
+                        ">
+                            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                                🏆 VERSÃO PROFISSIONAL
+                            </div>
+                            <div style="font-size: 32px; font-weight: bold; margin: 10px 0;">
+                                R$ 15,99
+                            </div>
+                            <div style="font-size: 14px; opacity: 0.9;">
+                                ✅ Testes ilimitados<br>
+                                ✅ 5 marketplaces<br>
+                                ✅ Suporte técnico<br>
+                                ✅ Sempre atualizado
+                            </div>
+                        </div>
+                        
+                        <button onclick="document.querySelector('#modal-limite').style.display='none'; abrirModal();" style="
+                            background: linear-gradient(135deg, #22c55e, #16a34a);
+                            color: white;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 10px;
+                            font-size: 18px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            margin: 10px;
+                            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            💰 Comprar Agora - PIX
+                        </button>
+                        
+                        <button onclick="document.querySelector('#modal-limite').style.display='none'" style="
+                            background: #6b7280;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            cursor: pointer;
+                            margin: 10px;
+                        ">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return modalHTML;
+        }
+        
+        function atualizarContadorVisual() {
+            const testesRestantes = MAX_TESTES - getTestesRealizados();
+            const contadorElement = document.querySelector('#contador-testes');
+            
+            if (contadorElement) {
+                contadorElement.innerHTML = `
+                    <div style="font-size: 18px; margin-bottom: 5px;">
+                        🔥 VERSÃO DEMO - TESTES LIMITADOS
+                    </div>
+                    <div style="font-size: 16px;">
+                        Você tem <span style="font-size: 20px; color: #ffd700;">${testesRestantes}</span> teste(s) restante(s)
+                    </div>
+                    <div style="font-size: 14px; margin-top: 8px; opacity: 0.9;">
+                        Adquira a versão completa por apenas R$ 15,99
+                    </div>
+                `;
+            }
+        }
+
         // Calculator functionality
         function calcularPrecos() {
+            // Verificar se ainda pode testar
+            if (!podeTestar()) {
+                document.body.insertAdjacentHTML('beforeend', criarModalLimite());
+                return;
+            }
+            
             const custo = parseFloat(document.getElementById('custo').value);
             const margem = parseFloat(document.getElementById('margem').value);
             const categoria = document.getElementById('categoria').value;
@@ -1284,6 +1443,12 @@
                 alert('A margem de lucro deve estar entre 1% e 100%.');
                 return;
             }
+            
+            // Incrementar contador de testes
+            const novosTestesRealizados = incrementarTestes();
+            
+            // Atualizar contador visual
+            atualizarContadorVisual();
             
             // Taxas dos marketplaces por categoria (simulação)
             const taxas = {
@@ -1564,6 +1729,11 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
+        });
+        
+        // Inicializar contador de testes
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarContadorVisual();
         });
     </script>
 </body>
